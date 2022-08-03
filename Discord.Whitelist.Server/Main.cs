@@ -81,16 +81,24 @@ namespace Discord.Whitelist.Server
 
                     GuildMember memberObj = JsonConvert.DeserializeObject<GuildMember>(memberObjStr);
 
-                    if (!memberObj.Roles.Contains(Config.WhitelistConfig.ROLEID))
+                    bool successWhitelist = false;
+
+                    foreach (string roleID in Config.WhitelistConfig.ROLEIDS)
+                    {
+                        if (memberObj.Roles.Contains(roleID))
+                        {
+                            successWhitelist = true;
+                            Debug.WriteLine($"------------------------------------------------------------------------------------------------------\n{playerName} ({DiscordID}) connected successfully to the server!\n------------------------------------------------------------------------------------------------------");
+                            deferrals.done();
+                        }
+                    }
+
+                    if (successWhitelist == false)
                     {
                         deferrals.done($"You must be Whitelisted in order to connect to the server!");
                         Debug.WriteLine($"------------------------------------------------------------------------------------------------------\n{playerName} ({DiscordID}) was unable to connect to the server.\nReason: Not Whitelisted in the Discord Server.\n------------------------------------------------------------------------------------------------------");
                         return;
                     }
-
-                    Debug.WriteLine($"------------------------------------------------------------------------------------------------------\n{playerName} ({DiscordID}) connected successfully to the server!\n------------------------------------------------------------------------------------------------------");
-
-                    deferrals.done();
                 }
             }
             catch (Exception ex)

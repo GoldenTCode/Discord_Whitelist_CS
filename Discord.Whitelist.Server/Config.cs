@@ -19,7 +19,7 @@ namespace Discord.Whitelist.Server
     {
         public string GUILDID;
         public string BOTTOKEN;
-        public string ROLEID;
+        public string[] ROLEIDS;
         public string DISCORDINV;
 
         public static void Load()
@@ -28,7 +28,7 @@ namespace Discord.Whitelist.Server
             {
                 GUILDID = "",
                 BOTTOKEN = "",
-                ROLEID = "",
+                ROLEIDS = { },
                 DISCORDINV = ""
             };
 
@@ -41,7 +41,7 @@ namespace Discord.Whitelist.Server
                     var whitelistConfigSection = configFile["WHITELIST"];
                     config.GUILDID = whitelistConfigSection["GUILDID"].StringValue;
                     config.BOTTOKEN = whitelistConfigSection["BOTTOKEN"].StringValue;
-                    config.ROLEID = whitelistConfigSection["ROLEID"].StringValue;
+                    config.ROLEIDS = whitelistConfigSection["ROLEIDS"].StringValueArray;
 
                     Config.WhitelistConfig = config;
                     Debug.WriteLine("[Discord WL] SUCCESS - The Config has been setup succesfully!");
